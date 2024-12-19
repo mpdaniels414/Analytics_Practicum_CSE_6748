@@ -1,15 +1,35 @@
-# Analytics_Practicum_CSE_6748
-My final master's project at Georgia Tech
-
+# Turbofan Degradation Analysis: Predicting Remaining Useful Life (RUL) and Fault Classification
 
 ## Overview
+This project is a comprehensive analysis of turbofan engines, focusing on predicting the **Remaining Useful Life (RUL)** and identifying faulty engines based on sensor data. Utilizing NASA's CMAPSS dataset, the project integrates data exploration, feature engineering, regression, and classification models to address complex operational conditions and fault modes.
 
-This project provides a comprehensive analysis and prediction pipeline for machinery data. It includes steps for conducting VIF tests, correlation models, heat mapping, feature distribution analysis, and building various prediction and classification models.
+---
+
+## Objectives
+1. **Predict Remaining Useful Life (RUL)**:
+   - Develop regression models to estimate the remaining operational life of turbofan engines under varying conditions.
+2. **Classify Faulty Engines**:
+   - Build classification models to detect engine degradation based on sensor data.
+
+---
+
+## Key Achievements
+1. **Regression Performance**:
+   - Improved RUL prediction for FD001 (single fault mode) using technical indicators, increasing **R²** from 0.5246 to 0.786 and reducing **MAE** to 14.25.
+   - Applied the model to datasets with greater complexity (FD002, FD003, FD004) and identified challenges related to multicollinearity and variability.
+2. **Classification Accuracy**:
+   - Achieved balanced accuracy of **0.9761** with a **Naïve Bayes** classifier for detecting faulty engines.
+   - Prioritized minimizing Type II errors to avoid critical misclassifications.
+3. **Innovative Indicators**:
+   - Integrated indicators such as RSI, CCI, Bollinger Bands Percentage, and Stochastic Oscillators to enhance predictive accuracy.
+4. **Comprehensive Analysis**:
+   - Detailed feature selection, correlation analysis, and validation metrics to ensure robust model performance.
+
+---
 
 ## Getting Started
 
 ### Prerequisites
-
 Make sure you have the following packages installed:
 - pandas
 - numpy
@@ -21,74 +41,99 @@ Make sure you have the following packages installed:
 - xgboost
 - tensorflow
 
-You can install these packages using pip:
-
+Install them using the following pip command:
 ```sh
 pip install pandas numpy matplotlib seaborn scikit-learn statsmodels imbalanced-learn xgboost tensorflow
 
-Additional Libraries
-Here are some of the specific libraries and modules you may need to import:
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from statsmodels.stats.outliers_influence import variance_inflation_factor
-import seaborn as sns
-from sklearn import metrics
-from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
-from imblearn.under_sampling import NearMiss
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn import svm
-from sklearn.model_selection import GridSearchCV, cross_val_score
-from sklearn.svm import SVC
-from sklearn.feature_selection import RFECV
-from sklearn.metrics import roc_auc_score, roc_curve, precision_recall_curve, confusion_matrix, accuracy_score, auc
-from sklearn.preprocessing import StandardScaler
-import xgboost as xgb
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.utils import to_categorical
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
+---
 
+## Data
+The project utilizes NASA’s CMAPSS dataset:
+- Four subsets: FD001, FD002, FD003, FD004, each representing different operational conditions and fault modes.
+- Key features include temperature, pressure, speed, and flow sensors.
 
-Data Files
-You can find all the relevant data files in the CMAPPSDATA folder included in the project directory.
+Data files and further details are available at the [NASA Prognostics Center of Excellence Data Repository](http://ti.arc.nasa.gov/projects/data_prognostics).
 
-Running the Analysis
-Step 1: Data Analysis
-Start by running Data_Analysis.ipynb. This notebook will help you conduct VIF tests, correlation models, heat mapping, and feature distribution analysis.
+---
 
-Swap out the files for whichever ones you'd like to review (e.g., FD001, FD002) while following the naming convention.
-Read the training, test, and RUL data:
+## Steps to Reproduce
 
-# Swap out the files for whichever ones you'd like to review. I.e. FD001, FD002, but make sure to follow the naming convention
-# Read the training data
-train_file_path = 'train_FD001.txt'
-train_data = pd.read_csv(train_file_path, delim_whitespace=True, header=None, names=headers)
+### 1. Data Exploration and Feature Selection
+- Run **`Data_Exploration.ipynb`** to analyze sensor data distributions, generate correlation heatmaps, and conduct VIF analysis.
+- Features like `T24`, `T30`, `P30`, `phi`, and `BPR` were identified as critical for RUL predictions.
 
-# Read the test data
-test_file_path = 'test_FD001.txt'
-test_data = pd.read_csv(test_file_path, delim_whitespace=True, header=None, names=headers)
+### 2. Initial RUL Prediction
+- Use **`Initial_RUL_Prediction.ipynb`** to train regression models such as Ridge, Lasso, Neural Network, and XGBoost.
+- Evaluate performance using metrics: **MAE**, **MSE**, and **R²**.
 
-# Read the RUL data
-rul_file_path = 'RUL_FD001.txt'
-rul_data = pd.read_csv(rul_file_path, header=None, names=['RUL'])
+### 3. Enhancing Models with Indicators
+- Run **`RUL_Prediction_Indicators.ipynb`** to integrate technical indicators:
+  - Relative Strength Index (RSI)
+  - Commodity Channel Index (CCI)
+  - Bollinger Bands Percentage (BB%)
+  - Stochastic Oscillators
+- Observe significant performance improvements.
 
-Perform the analysis for all four FD files.
-Step 2: Initial RUL Prediction
-After completing the data analysis, run Initial_RUL_Prediction.ipynb. This notebook contains the different models created before adding indicators.
+### 4. Fault Classification
+- Use **`Classification.ipynb`** to train models including Naïve Bayes, QDA, and Random Forest.
+- Adjust thresholds for balanced accuracy and minimal Type II error.
 
-Step 3: RUL Prediction with Indicators
-Next, run RUL_Prediction_Indicators.ipynb. This notebook demonstrates how indicators add value to the prediction functions.
+---
 
-Step 4: Classification Model
-Finally, run Classification.ipynb to see the classification model developed in the project.
+## Results Summary
+### FD001 (Single Operating Condition)
+- **R²**: 0.786  
+- **MAE**: 14.25  
+- **Score**: 583  
 
-Conclusion
-By following these steps, you will be able to analyze the data, build prediction models, classification models, and evaluate the performance of these models with and without indicators. 
-We hope you enjoy this project, we had a blast putting it all together this summer for you!
+### FD002 (Multiple Conditions)
+- **R²**: 0.689  
+- **MAE**: 22.55  
+- **Score**: 25,616  
+
+### FD003 (Single Condition, Multiple Fault Modes)
+- **R²**: 0.56  
+- **MAE**: 18.18  
+- **Score**: 4,677  
+
+### FD004 (Multiple Conditions, Multiple Fault Modes)
+- **R²**: 0.461  
+- **MAE**: 30.9  
+- **Score**: 36,608  
+
+---
+
+## Model Insights
+1. **Regression**:
+   - Neural Networks performed best for regression tasks, effectively capturing non-linear relationships.
+   - Indicators like RSI and BB% enhanced predictive accuracy significantly.
+2. **Classification**:
+   - Naïve Bayes achieved high balanced accuracy of 0.9761 after threshold optimization.
+   - Minimizing Type II errors was prioritized to prevent misclassification of faulty engines.
+
+---
+
+## Challenges
+- **Multicollinearity**: High correlations among sensors required careful feature selection.
+- **Data Variability**: FD002 and FD004 presented greater complexity due to multiple operating conditions and fault modes.
+- **Noise**: Sensor data exhibited irregular distributions, complicating predictions.
+
+---
+
+## Team Contributions
+- **Michael Daniels**: Developed regression models and RUL prediction analysis.
+- **Cory Bowersox**: Conducted feature engineering and indicator logic implementation.
+- **Baris Kopruluoglu**: Built classification models and optimized performance metrics.
+
+---
+
+## References
+1. NASA Prognostics Data Repository: [Link](http://ti.arc.nasa.gov/projects/data_prognostics)
+2. Saxena, K., Goebel, D., et al., “Damage Propagation Modeling for Aircraft Engines.”
+3. Wang, T., Yu, J., et al., “Similarity-based Prognostics for RUL Estimation.”
+
+---
+
+## Conclusion
+This project demonstrates the potential of advanced machine learning techniques in predictive maintenance for turbofan engines. By incorporating technical indicators and addressing challenges like multicollinearity and noise, the team achieved robust results for RUL prediction and fault classification. These insights pave the way for more reliable and efficient maintenance models, enhancing aviation safety and operational efficiency.

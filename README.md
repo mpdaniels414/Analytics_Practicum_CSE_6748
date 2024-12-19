@@ -44,7 +44,7 @@ Make sure you have the following packages installed:
 Install them using the following pip command:
 ```sh
 pip install pandas numpy matplotlib seaborn scikit-learn statsmodels imbalanced-learn xgboost tensorflow
-
+```
 
 ---
 
